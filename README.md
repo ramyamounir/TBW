@@ -32,7 +32,7 @@ wrapper = TBWrapper('logs') # path to logging directory
 loss_writer = wrapper('scalar', 'loss')
 
 for _ in range(10):
-    loss_writer(torch.randn(1), flush=True)
+    loss_writer(torch.randn(1))
 
 del wrapper
 ```
