@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
-from tbw import __version__, __build__
-
+__version__ = "0.0.1"
+__build__ = '0'
 
 with open("README.md", "r", encoding="utf-8") as f:
   long_description = f.read()
