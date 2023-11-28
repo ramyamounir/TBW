@@ -4,6 +4,9 @@ TBWrapper
 **TBW** is a wrapper to facilitate tensorboard logging. 
 Below are some scripts with examples for different data types.
 
+.. note::
+   Other data types (e.g., figure, histogram) are available.
+
 
 SCALAR
 ======
@@ -118,6 +121,47 @@ EMBEDDING
     del wrapper
 
 ====
+
+
+MULTIPLE WRITERS
+================
+
+.. code-block:: python
+
+    import torch
+    from tbw import TBWrapper, TBType
+
+    wrapper = TBWrapper('logs') # path to logging directory
+
+    # can directly use enum data types instead
+    wrapper(TBType.SCALAR, 'loss')
+    wrapper(TBType.IMAGE, 'image')
+    wrapper(TBType.VIDEO, 'video')
+
+    for _ in range(10):
+
+        # Find writer objects by tag
+        wrapper['loss'](torch.randn(1))
+        wrapper['image'](torch.randn(3, 128, 128))
+
+    wrapper['video'](torch.randn(1, 5, 3, 128, 128))
+
+    #optional cleanup
+    wrapper['loss'].flush()
+    wrapper['image'].flush()
+    wrapper['video'].flush()
+    del wrapper
+
+====
+
+
+.. toctree::
+   :caption: QUICKSTART
+   :glob:
+   :hidden:
+   :titlesonly:
+
+   installation
 
 
 .. toctree::

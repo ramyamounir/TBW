@@ -116,7 +116,10 @@ class TBWriter(object):
 
 
         self.step += 1
-        if flush: self.writer.flush()
+        if flush: self.flush()
+
+    def flush(self):
+        self.writer.flush()
 
 
 class TBWrapper(object):
@@ -138,8 +141,8 @@ class TBWrapper(object):
         :param TBType data_type: The type of data for logging
         :param str tag: The tag for the data stream
         """
-
-        writer = TBWriter(self.writer, TBType.from_str(data_type), tag)
+        type_enum = data_type if isinstance(data_type, TBType) else TBType.from_str(data_type)
+        writer = TBWriter(self.writer, type_enum, tag)
         self.writers[tag] = writer
         return writer
 
