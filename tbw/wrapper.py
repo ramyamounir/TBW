@@ -1,6 +1,7 @@
 from torch.utils.tensorboard import SummaryWriter
 from tbw.functionals import checkdir
 from enum import Enum
+import subprocess, multiprocessing as mp
 
 class TBType(Enum):
     r"""The data type of the writer"""
@@ -129,10 +130,20 @@ class TBWrapper(object):
     :param str path: Path to save the logging files
     """
 
-    def __init__(self, path):
+    def __init__(self, path, start_port=None):
+        self.path = path
+        self.start_port = start_port
+
         checkdir(path)
         self.writer = SummaryWriter(path)
         self.writers = {}
+
+        if start_port != None:
+            self.tb_proc = mp.Process(target=self.start_tensorboard)
+            self.tb_proc.start()
+
+    def start_tensorboard(self):
+        subprocess.Popen(['tensorboard', '--logdir', self.path, '--port', str(self.start_port)])
 
     def __call__(self, data_type, tag):
         r"""
